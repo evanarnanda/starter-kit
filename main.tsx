@@ -4,12 +4,15 @@ import { staticPlugin } from '@elysiajs/static'
 import { tailwind } from "@gtramontina.com/elysia-tailwind";
 import { swagger } from "@elysiajs/swagger";
 import { logger } from "@bogeychan/elysia-logger";
+import { htmx } from "@gtramontina.com/elysia-htmx";
+import { env } from "./env";
 
 import Test from "./src/component/Text";
 import FirstComponent from "./src/component/FirstComponent";
 import BaseHtml from "./src/component/common/base";
 import NavBar from "./src/component/common/navbar";
 import { auth } from "./src/auth";
+import { apiRouteV1 } from "./src/api";
 const app = new Elysia()
 .use(swagger())
 .use(html())
@@ -34,6 +37,7 @@ const app = new Elysia()
     },
   })
 )
+.use(htmx())
 .get('/', (ctx) => { 
     ctx.log.error(ctx, "Context");
     ctx.log.info(ctx.request, "Request"); // noop
@@ -48,10 +52,13 @@ const app = new Elysia()
       </>
     </BaseHtml>
   )})
-.use(auth)
-.listen(3000)
+.use(apiRouteV1)
+.use(auth);
 
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
+app.listen({port: env.PORT }, ({ hostname, port }) => {
+  const url = env.NODE_ENV === 'production' ? 'https' : 'http'
 
+  console.log(
+    `🦊 Elysia is running at ${url}://${hostname}:${port}`
+  );
+})

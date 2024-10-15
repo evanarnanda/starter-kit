@@ -1,9 +1,9 @@
 import Elysia from "elysia";
 import { signIn } from "./sign-in/index";
-import { register } from "./register/index";
+import { signUp } from "./signup/index";
 
 const auth = new Elysia( { prefix: '/auth' } )
 .use(signIn)
-.use(register)
+.use(signUp)
 
 export { auth }

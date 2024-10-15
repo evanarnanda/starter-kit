@@ -1,14 +1,14 @@
 import { Html, html } from "@elysiajs/html"
 import Elysia from "elysia"
-import Register from "./component/register"
+import SignUp from "./component/signup"
 import BaseHtml from "../../component/common/base"
 
 
-const register = new Elysia()
-.get('/register', () => (
+const signUp = new Elysia()
+.get('/signup', () => (
   <BaseHtml>
-    <Register />
+    <SignUp />
   </BaseHtml>
 ))
 
-export { register }
+export { signUp }

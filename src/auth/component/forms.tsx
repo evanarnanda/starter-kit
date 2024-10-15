@@ -38,7 +38,7 @@ function SignInForm() {
             <input type="password" class="grow" value="password" />
           </label>
         <div class="flex justify-between">
-          <a class="link link-accent" href="/auth/register">You have not register to our system?</a>
+          <a class="link link-accent" href="/auth/signup">You have not sign up to our system?</a>
           <button class="btn btn-primary">Sign In</button>
         </div>
       </div>
@@ -46,11 +46,12 @@ function SignInForm() {
   )
 }
 
-function RegisterForm() {
+function SignUpForm() {
   return (
     <div class="card bg-base-100 w-96 shadow-xl">
       <div class="card-body">
-        <h2 class="card-title">Register!</h2>
+        <h2 class="card-title">Sign Up!</h2>
+        <form hx-post='/api/v1/auth/signup' class='flex flex-col space-y-2' hx-target="#response-div" hx-swap='outterHTML'>
           <label class="input input-bordered flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +63,7 @@ function RegisterForm() {
               <path
                 d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
             </svg>
-            <input type="text" class="grow" placeholder="Email" />
+            <input type="text" class="grow" placeholder="Email" name="email"/>
           </label>
           <label class="input input-bordered flex items-center gap-2">
             <svg
@@ -75,19 +76,40 @@ function RegisterForm() {
                 d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
                 clip-rule="evenodd" />
             </svg>
-            <input type="password" class="grow" value="password" />
+            <input type="password" class="grow" value="password" name="password"/>
           </label>
-        <div class="flex justify-between">
+          <div id='response-div'></div>
+        <div class="flex justify-between" id='footer'>
           <a class="link link-accent" href="/auth/signin">Already have an account?</a>
-          <button class="btn btn-primary">Register</button>
+          <button class="btn btn-primary" type="submit">Sign Up</button>
         </div>
-      </div>
+        </form>
+        </div>
     </div>
   )
 }
 
+function ErrorMassage({ massage }: {massage: string}) {
+  return (
+    <div role="alert" class="alert alert-error">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6 shrink-0 stroke-current"
+        fill="none"
+        viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>{massage}</span>
+    </div>
+  )
+}
 
 export { 
   SignInForm, 
-  RegisterForm, 
+  SignUpForm, 
+  ErrorMassage,
 }
