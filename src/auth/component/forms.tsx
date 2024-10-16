@@ -1,4 +1,5 @@
 import { Html } from "@elysiajs/html";
+import { Spinner } from "../../component/common/loading/spinner";
 
 function SignInForm() {
  
@@ -51,7 +52,7 @@ function SignUpForm() {
     <div class="card bg-base-100 w-96 shadow-xl">
       <div class="card-body">
         <h2 class="card-title">Sign Up!</h2>
-        <form hx-post='/api/v1/auth/signup' class='flex flex-col space-y-2' hx-target="#response-div" hx-swap='outterHTML'>
+        <form class='flex flex-col space-y-2' hx-post='/api/v1/auth/signup' hx-target="#response-div" hx-swap='outterHTML' hx-disabled-elt="find button" hx-indicator="#spinner">
           <label class="input input-bordered flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -81,7 +82,10 @@ function SignUpForm() {
           <div id='response-div'></div>
         <div class="flex justify-between" id='footer'>
           <a class="link link-accent" href="/auth/signin">Already have an account?</a>
-          <button class="btn btn-primary" type="submit">Sign Up</button>
+          <button class="btn btn-primary disabled:opacity-50" type="submit">
+          <Spinner id="spinner" size={'loading-xs'}/>
+            Sign Up
+          </button>
         </div>
         </form>
         </div>
