@@ -1,7 +1,7 @@
 import { Html } from "@elysiajs/html";
 import { Elysia, t } from "elysia";
 import { z } from "zod";
-import { ErrorMassage } from "../../auth/component/forms";
+import { ErrorMassage } from "../../pages/auth/component/forms";
 import { db } from "../../lib/db";
 import { userTable } from "../../db/schemas/auth";
 import { eq } from "drizzle-orm";

@@ -11,7 +11,7 @@ import Test from "./src/component/Text";
 import FirstComponent from "./src/component/FirstComponent";
 import BaseHtml from "./src/component/common/base";
 import NavBar from "./src/component/common/navbar";
-import { auth } from "./src/auth";
+import { auth } from "./src/pages/auth";
 import { apiRouteV1 } from "./src/api";
 import { pagesRoutes } from "./src/pages";
 const app = new Elysia()
@@ -40,8 +40,7 @@ const app = new Elysia()
 )
 .use(htmx())
 .use(pagesRoutes)
-.use(apiRouteV1)
-.use(auth);
+.use(apiRouteV1);
 
 app.listen({port: env.PORT }, ({ hostname, port }) => {
   const url = env.NODE_ENV === 'production' ? 'https' : 'http'

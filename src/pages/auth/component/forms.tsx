@@ -1,5 +1,5 @@
 import { Html } from "@elysiajs/html";
-import { Spinner } from "../../component/common/loading/spinner";
+import { Spinner } from "../../../component/common/loading/spinner";
 
 function SignInForm() {
  
