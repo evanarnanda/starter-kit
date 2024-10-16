@@ -9,5 +9,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
       evt.detail.shouldSwap = true;
       evt.detail.isError = false;
     }
+    if (evt.detail.xhr.status === 500) {
+      evt.detail.shouldSwap = true;
+      evt.detail.isError = false;
+    }
   });
 })

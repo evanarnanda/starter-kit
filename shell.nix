@@ -2,6 +2,7 @@
 
 pkgs.mkShell {
   buildInputs = [
+    pkgs.nodejs_20
     pkgs.bun
     pkgs.git
   ];

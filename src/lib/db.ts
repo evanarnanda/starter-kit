@@ -5,8 +5,6 @@ import { env } from "../../env";
 
 import * as authSchemas from '../db/schemas/auth';
 
-console.log(env.DATABASE_URL)
-
 const pool = new Pool({
   connectionString: env.DATABASE_URL,
 });

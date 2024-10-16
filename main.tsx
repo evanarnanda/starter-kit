@@ -13,6 +13,7 @@ import BaseHtml from "./src/component/common/base";
 import NavBar from "./src/component/common/navbar";
 import { auth } from "./src/auth";
 import { apiRouteV1 } from "./src/api";
+import { pagesRoutes } from "./src/pages";
 const app = new Elysia()
 .use(swagger())
 .use(html())
@@ -38,20 +39,7 @@ const app = new Elysia()
   })
 )
 .use(htmx())
-.get('/', (ctx) => { 
-    ctx.log.error(ctx, "Context");
-    ctx.log.info(ctx.request, "Request"); // noop
-    return (
-    <BaseHtml>
-      <>
-        <NavBar />
-        <div class='flex flex-col justify-center items-center h-screen'>
-          <FirstComponent />
-          <Test />
-        </div>
-      </>
-    </BaseHtml>
-  )})
+.use(pagesRoutes)
 .use(apiRouteV1)
 .use(auth);
 

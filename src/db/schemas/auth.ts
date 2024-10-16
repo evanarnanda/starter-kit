@@ -1,17 +1,16 @@
 import pg from 'pg';
 import { integer, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core';
-import { password } from 'bun';
-import { InferSelectModel } from 'drizzle-orm';
+import { InferSelectModel, max } from 'drizzle-orm';
 
 export const userTable = pgTable('user', {
-  id: serial('id').primaryKey(),
+  id: varchar('id', { length: 36 }).primaryKey(),
   email: varchar('email').unique().notNull(),
   password: varchar('password'),
 })
 
 export const sessionTable = pgTable('session', {
-  id: text('id').primaryKey(),
-  userId: integer('user_id')
+  id: varchar('id', { length: 64 }).primaryKey(),
+  userId: varchar('user_id', { length: 36 })
   .notNull()
   .references(() => userTable.id),
   expiresAt: timestamp('expires_at', {
