@@ -1,14 +1,18 @@
-# Elysia with Bun runtime
+# HTMX w/ JSX Syntax and Elysia as backend ??
 
 ## About
-This Project is for stater kits that use the Bun runtime.
+This Project is for stater kits that use HTMX with JSX Syntax.
+Why? because i kinnda like jsx but i struggle with react lmao.
+2 SE influence me to use HTMX but they use django or Go.
+So instead using those, I use TS and i found out about [Elysia JS](https://elysiajs.com/) and it's support html with jsx syntax. I'm not yet really now how they work but I start the project anyway.
+
 Stack in this project are:
 - Nix (for development shell)
 - Bun (for runtime)
 - HTMX (for client side interactions)
-- Tailwind + Daisy UI(for styling)
+- Tailwind + Daisy UI (for styling)
 - Docker
-- Postgresql (for database)
+- Postgresql (for database) + Drizzle ORM 
 
 ### Features
 - [ ] Landing page
