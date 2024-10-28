@@ -13,6 +13,7 @@ export default function BaseHtml( { children }: { children: JSX.Element } ) {
       <body>
           {children}
       </body>
+      <script src="/public/theme.js"></script>
   </html>
   )
 } 
