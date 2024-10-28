@@ -40,7 +40,7 @@ export async function validateSessionToken(token: string): Promise<SessionValida
   .innerJoin(userTable, eq(sessionTable.userId, userTable.id))
   .where(eq(sessionTable.id, sessionId));
 
-  if (result.length < 0) {
+  if (result.length === 0) {
     return { session: null, user: null };
   }
 
@@ -63,7 +63,18 @@ export async function validateSessionToken(token: string): Promise<SessionValida
   return { session, user };
 }
 
-
 export type SessionValidationResult = 
     { session: Session; user: User } | 
     { session: null; user: null };
+
+export async function invalidateSession(sessionId: string): Promise<SessionInvalidationResult> {
+  const result = await db.delete(sessionTable).where(eq(sessionTable.id, sessionId)).returning({ deletedId: sessionTable.id });
+  if (result.length === 0) {
+    return { deletedId: null };
+  }
+  return { deletedId: result[0].deletedId };
+}
+
+export type SessionInvalidationResult =
+  { deletedId: string } | 
+  { deletedId: null };

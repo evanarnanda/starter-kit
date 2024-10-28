@@ -3,7 +3,8 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch main.tsx"
+    "dev": "bun run --watch main.tsx",
+    "db:studio": "bun drizzle-kit studio"
   },
   "dependencies": {
     "@bogeychan/elysia-logger": "^0.1.4",

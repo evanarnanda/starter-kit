@@ -7,11 +7,6 @@ import { logger } from "@bogeychan/elysia-logger";
 import { htmx } from "@gtramontina.com/elysia-htmx";
 import { env } from "./env";
 
-import Test from "./src/component/Text";
-import FirstComponent from "./src/component/FirstComponent";
-import BaseHtml from "./src/component/common/base";
-import NavBar from "./src/component/common/navbar";
-import { auth } from "./src/pages/auth";
 import { apiRouteV1 } from "./src/api";
 import { pagesRoutes } from "./src/pages";
 const app = new Elysia()

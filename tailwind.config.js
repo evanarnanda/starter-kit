@@ -13,6 +13,7 @@ module.exports = {
   daisyui: {
     themes: [
       "bumblebee",
+      "halloween",
     ],
   }
 }
