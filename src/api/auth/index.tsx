@@ -1,7 +1,7 @@
 import { Html } from "@elysiajs/html";
 import { Elysia, t } from "elysia";
 import { z } from "zod";
-import { ErrorMassage, SignUpForm } from "../../pages/auth/component/forms";
+import { ErrorMassage, SignInForm, SignUpForm } from "../../pages/auth/component/forms";
 import { db } from "../../lib/db";
 import { userTable } from "../../db/schemas/auth";
 import { eq, and } from "drizzle-orm";
@@ -127,14 +127,9 @@ export const authRoutes = new Elysia({prefix: '/auth'})
 
     if (!parsed.success) {
       const inputError = parsed.error.flatten().fieldErrors
-      const email = inputError.email
-      const password = inputError.password
 
       return error(422,
-        <div id='response-div' class='flex flex-col space-y-2'>
-          {email && <ErrorMassage massage={email[0]} />}
-          {password && <ErrorMassage massage={password[0]} />}
-        </div>
+        <SignInForm error={inputError} />
       )
     }
 
@@ -150,19 +145,20 @@ export const authRoutes = new Elysia({prefix: '/auth'})
     )
 
     if (errorQueryExisting) {
+      const inputError = {
+        others: ['Oops We are really sorry, something went wrong! Try again later!']
+      }
       return error(500,
-        <div id='response-div' class='flex flex-col space-y-2'>
-          <ErrorMassage massage='Oops We are really sorry, something went wrong! Try again later!' />
-        </div>
+        <SignInForm error={inputError}  />
       )
     }
 
-    console.log(existing)
     if (existing.length === 0) {
+      const inputError = {
+        others: ['Email or password is incorrect!']
+      }
       return error(422,
-        <div id='response-div' class='flex flex-col space-y-2'>
-          <ErrorMassage massage='Email or password is incorrect' />
-        </div>
+        <SignInForm error={inputError}  />
       )
     }
     
@@ -170,10 +166,11 @@ export const authRoutes = new Elysia({prefix: '/auth'})
     const [errorSessionEvent, sessionEvent] = await catchError(createSession(sessionToken, existing[0].id))
 
     if (errorSessionEvent) {
-      return error(500, 
-        <div id='response-div' class='flex flex-col space-y-2'>
-          <ErrorMassage massage='Oops We are really sorry, something went wrong! Try again later!' />
-        </div>
+      const inputError = {
+        others: ['Oops We are really sorry, something went wrong! Try again later!']
+      }
+      return error(500,
+        <SignInForm error={inputError}  />
       )
     }
 
