@@ -1,7 +1,7 @@
 import { Html } from "@elysiajs/html";
 import { Elysia, t } from "elysia";
 import { z } from "zod";
-import { ErrorMassage } from "../../pages/auth/component/forms";
+import { ErrorMassage, SignUpForm } from "../../pages/auth/component/forms";
 import { db } from "../../lib/db";
 import { userTable } from "../../db/schemas/auth";
 import { eq, and } from "drizzle-orm";
@@ -40,16 +40,11 @@ export const authRoutes = new Elysia({prefix: '/auth'})
 
     if (!parsed.success) {
       const inputError = parsed.error.flatten().fieldErrors
-      const email = inputError.email
-      const password = inputError.password
-      const confirmPassword = inputError.confirmPassword
-
+      const emailValue = inputError.email ? '' : body.email
+      const passwordValue = inputError.password ? '' : body.password
+      const confirmPasswordValue = inputError.confirmPassword ? '' : body.confirmPassword
       return error(422,
-        <div id='response-div' class='flex flex-col space-y-2'>
-          {email && <ErrorMassage massage={email[0]} />}
-          {password && <ErrorMassage massage={password[0]} />}
-          {confirmPassword && <ErrorMassage massage={confirmPassword[0]} />}
-        </div>
+        <SignUpForm error={inputError} emailValue={emailValue} passwordValue={passwordValue} confirmPasswordValue={confirmPasswordValue} />
       )
     }
 
@@ -62,18 +57,20 @@ export const authRoutes = new Elysia({prefix: '/auth'})
     )
 
     if (errorQueryExisting) {
+      const inputError = {
+        others: ['Oops We are really sorry, something went wrong! Try again later!']
+      }
       return error(500,
-        <div id='response-div' class='flex flex-col space-y-2'>
-          <ErrorMassage massage='Oops We are really sorry, something went wrong! Try again later!' />
-        </div>
+        <SignUpForm error={inputError} emailValue={body.email} passwordValue={body.password}  />
       )
     }
 
     if (existing && existing.length > 0) {
+      const inputError = {
+        others: ['Email already exists!']
+      }
       return error(422,
-        <div id='response-div' class='flex flex-col space-y-2'>
-          <ErrorMassage massage='Email already exists' />
-        </div>
+        <SignUpForm error={inputError} emailValue={body.email} passwordValue={body.password} />
       )
     }
 
@@ -86,10 +83,11 @@ export const authRoutes = new Elysia({prefix: '/auth'})
     );
 
     if (errorInsertUser) {
+      const inputError = {
+        others: ['Oops We are really sorry, something went wrong! Try again later!']
+      }
       return error(500,
-        <div id='response-div' class='flex flex-col space-y-2'>
-          <ErrorMassage massage='Oops We are really sorry, something went wrong! Try again later!' />
-        </div>
+        <SignUpForm error={inputError} emailValue={body.email} passwordValue={body.password} />
       )
     }  
 
@@ -97,10 +95,11 @@ export const authRoutes = new Elysia({prefix: '/auth'})
     const [errorSessionEvent, sessionEvent] = await catchError(createSession(sessionToken, insertUser[0].insertedId))
 
     if (errorSessionEvent) {
-      return error(500, 
-        <div id='response-div' class='flex flex-col space-y-2'>
-          <ErrorMassage massage='Oops We are really sorry, something went wrong! Try again later!' />
-        </div>
+      const inputError = {
+        others: ['Oops We are really sorry, something went wrong! Try again later!']
+      }
+      return error(500,
+        <SignUpForm error={inputError} emailValue={body.email} passwordValue={body.password} />
       )
     }
 
