@@ -8,6 +8,8 @@ import { eq, and } from "drizzle-orm";
 import { catchError } from "../../lib/error";
 import { createSession, generateIdFromEntropySize, generateSessionToken, invalidateSession, validateSessionToken } from "../../lib/auth";
 import { env } from "bun";
+import { sha256 } from "@oslojs/crypto/sha2";
+import { encodeHexLowerCase } from "@oslojs/encoding";
 
 const SignUpSchema = {
   body: t.Object({
@@ -75,10 +77,12 @@ export const authRoutes = new Elysia({prefix: '/auth'})
     }
 
     const id = generateIdFromEntropySize(21)
+    const hasedPassword = sha256(new TextEncoder().encode(password))
+    const hexPassword = encodeHexLowerCase(hasedPassword)
     const [errorInsertUser, insertUser] = await catchError(db.insert(userTable).values({
         id: id,
         email: email,
-        password: password,
+        password: hexPassword,
       }).returning({ insertedId: userTable.id })
     );
 
@@ -135,11 +139,13 @@ export const authRoutes = new Elysia({prefix: '/auth'})
 
     const { email, password } = parsed.data
 
+    const hasedPassword = sha256(new TextEncoder().encode(password))
+    const hexPassword = encodeHexLowerCase(hasedPassword)
     const [errorQueryExisting, existing] = await catchError(
         db.select().from(userTable).where(
           and(
             eq(userTable.email, email),
-            eq(userTable.password, password)
+            eq(userTable.password, hexPassword)
           )
         )
     )
